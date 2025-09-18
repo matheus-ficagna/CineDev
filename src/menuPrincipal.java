@@ -4,17 +4,22 @@ public class menuPrincipal {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        char[][] salaDeCinema = new char[10][20]; // Cria a matriz com os assentos
+        // Cria uma matriz 10x20 para representar a sala de cinema
+        // 10 fileiras e 20 assentos por fileira
+        char[][] salaDeCinema = new char[10][20]; 
 
-        
-        for (int i = 0; i < salaDeCinema.length; i++) { // Todos assentos são declarados inicialmente como livres
+        // Inicializa todos os assentos como livres ('L')
+        // Percorre todas as fileiras da matriz
+        for (int i = 0; i < salaDeCinema.length; i++) {
+            // Percorre todos os assentos de cada fileira
             for (int j = 0; j < salaDeCinema[i].length; j++) {
-                salaDeCinema[i][j] = 'L';
+                salaDeCinema[i][j] = 'L'; // Define cada assento como livre
             }
         }
 
         byte opcao;
         do {
+            // Menu principal do sistema
             System.out.println("---- Cinema CineDev ----");
             System.out.println("Exibir mapa de assentos - 1");
             System.out.println("Comprar ingressos - 2");
@@ -23,31 +28,34 @@ public class menuPrincipal {
             System.out.println("Sair - 5");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextByte();
+            opcao = scanner.nextByte(); // Lê a opção do usuário
 
             switch (opcao) {
             case 1:
-                // Exibição do mapa de assentos
-                System.out.print("           "); // Espaço em branco para alinhar as colunas na saída
-            
-                // Percorre todas as colunas da primeira fileira e retorna o seu número
-                for (int j = 0; j < salaDeCinema[0].length; j++) {
-                   System.out.printf("%3d", j + 1); 
-                }
-                System.out.println();
+                // Exibe o mapa visual da sala de cinema
+                System.out.print("           "); // Imprime 11 espaços para alinhar os números das colunas
                 
-                // Percorre todas as fileiras e retorna o número de fileiras
-                for (int i = 0; i < salaDeCinema.length; i++) {
-                   System.out.printf("Fileira %2d: ", i + 1); 
-                   
-                for (int j = 0; j < salaDeCinema[i].length; j++) { 
-                   System.out.print("[" + salaDeCinema[i][j] + "]"); // Imprime os assentos
+                // Imprime os números das colunas (1 a 20)
+                // Percorre todas as colunas da primeira fileira
+                for (int j = 0; j < salaDeCinema[0].length; j++) {
+                    System.out.printf("%3d", j + 1); // Formata cada número de coluna com 3 dígitos
                 }
-                   System.out.println();
+                System.out.println(); // Pula linha após imprimir os números das colunas
+
+                // Imprime cada fileira com seus assentos
+                // Percorre todas as fileiras da sala
+                for (int i = 0; i < salaDeCinema.length; i++) {
+                    System.out.printf("Fileira %2d: ", i + 1); // Imprime o número da fileira formatado
+                    
+                    // Imprime todos os assentos da fileira atual
+                    // Percorre cada assento da fileira atual
+                    for (int j = 0; j < salaDeCinema[i].length; j++) {
+                        System.out.print("[" + salaDeCinema[i][j] + "]"); // Mostra o assento entre colchetes
+                    }
+                    System.out.println(); // Pula linha após imprimir todos os assentos da fileira
                 }
                 break;
 
-                    
             case 2:
                 // Processo de compra de ingressos
                 System.out.println("Selecione a fileira do assento que deseja comprar (1-" + salaDeCinema.length + "):");
@@ -97,12 +105,38 @@ public class menuPrincipal {
                 break;
             
             case 4:
+                // Relatório de ocupação da sala
+                int totalDeAssentos = salaDeCinema.length * salaDeCinema[0].length; // Calcula o total de assentos (fileiras × colunas)
+                int assentosOcupados = 0; // Contador para assentos ocupados
+                int assentosLivres = 0; // Contador para assentos livres
+                double percentualOcupacao = 0; // Variável para armazenar o percentual de ocupação
                 
+                // Percorre toda a matriz para contar os assentos ocupados
+                // Loop através de todas as fileiras
+                for(int i = 0; i < salaDeCinema.length; i++) {
+                    // Loop através de todos os assentos de cada fileira
+                    for(int j = 0; j < salaDeCinema[i].length; j++) {
+                        // Verifica se o assento está ocupado
+                        if(salaDeCinema[i][j] == 'X') {
+                            assentosOcupados++; // Incrementa o contador de assentos ocupados
+                        }
+                    }
+                }
+                
+                assentosLivres = totalDeAssentos - assentosOcupados; // Calcula assentos livres (total - ocupados)
+                // Calcula percentual de ocupação (com cast para double para evitar divisão inteira)
+                percentualOcupacao = (assentosOcupados / (double) totalDeAssentos) * 100;
+                
+                // Exibe o relatório formatado
+                System.out.printf("Total de assentos na sala: %d\n", totalDeAssentos);
+                System.out.printf("Assentos ocupados: %d\n", assentosOcupados);
+                System.out.printf("Assentos livres: %d\n", assentosLivres);
+                System.out.printf("Percentual de assentos ocupados: %.2f%%\n", percentualOcupacao);
                 break;
             
             case 5:
                 // Encerra o programa
-                System.out.println("Fechando a aplicação...");
+                System.out.println("Encerrando o programa... Obrigado por usar o CineDev!");
                 return; // Sai do método main, encerrando o programa
             
             default:
@@ -111,6 +145,6 @@ public class menuPrincipal {
             }
         } while (opcao != 0); // Loop continua até que opção 0 seja escolhida (não existe no menu)
         
-        scanner.close();
+        scanner.close(); // Fecha o scanner para liberar recursos
     }
 }
